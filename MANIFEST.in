@@ -1,0 +1,33 @@
+# Include important files
+include README.md
+include pyproject.toml
+
+# Include all package source files
+recursive-include llm_detector *.py
+
+# Include asset files
+recursive-include llm_detector/assets *.joblib *.json.gz
+recursive-include llm_detector/assets/tokenizers *.json
+
+# Exclude build artifacts and temporary files
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store
+global-exclude *.egg-info
+global-exclude *.log
+global-exclude *.pkl
+
+# Exclude test files
+recursive-exclude tests *
+recursive-exclude test_*.py
+
+# Exclude other non-distribution directories
+recursive-exclude archive *
+recursive-exclude scripts *
+recursive-exclude docs *
+recursive-exclude .github *
+recursive-exclude dist *
+recursive-exclude build *
+prune .git
+prune .pytest_cache
+prune .ruff_cache

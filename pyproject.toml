@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-detector"
+version = "0.1.0"
+description = "Transparent, probabilistic classification of text as human-generated or LLM-generated"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "nupunkt-rs>=0.1.1",
+    "scikit-learn>=1.6.0",
+    "tokenizers>=0.20.0",
+]
+
+[project.optional-dependencies]
+training = [
+    "datasets>=2.19",
+    "zstandard>=0.22",
+    "pyarrow>=12",
+    "tqdm>=4.66",
+]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-cov>=4.1",
+    "pytest-benchmark>=5.1.0",
+    "ruff>=0.5.0",
+]
+
+[project.scripts]
+llm-detector = "llm_detector.cli:main"
+llm-detector-train = "llm_detector.training.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["llm_detector", "llm_detector.*"]
+exclude = [
+    "tests",
+    "tests.*",
+    "docs",
+    "docs.*",
+    "examples",
+    "examples.*",
+    "scripts",
+    "scripts.*",
+    "archive",
+    "archive.*",
+    "*.pyc",
+    "__pycache__",
+    "*.egg-info",
+    ".pytest_cache",
+    "*.pkl",
+    "*.log",
+    "dist",
+    "build",
+    ".github",
+]
+
+[tool.setuptools.package-data]
+"llm_detector.assets" = ["*.joblib", "*.json.gz"]
+"llm_detector.assets.tokenizers" = ["*.json"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+extend-select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: tests that rely on external data sources or long-running streaming jobs",
+    "requires_datasets: tests that require the Hugging Face datasets package",
+]
+
