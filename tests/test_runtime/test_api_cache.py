@@ -19,8 +19,8 @@ def _reset_runtime_cache() -> Iterator[None]:
 
 
 def _copy_artifacts(source_model: Path, source_baseline: Path, dest_dir: Path) -> tuple[Path, Path]:
-    model_copy = dest_dir / "model.joblib"
-    baseline_copy = dest_dir / "baseline.json.gz"
+    model_copy = dest_dir / source_model.name
+    baseline_copy = dest_dir / source_baseline.name
     shutil.copy(source_model, model_copy)
     shutil.copy(source_baseline, baseline_copy)
     return model_copy, baseline_copy

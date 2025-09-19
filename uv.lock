@@ -452,11 +452,10 @@ wheels = [
 
 [[package]]
 name = "llm-detector"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "nupunkt-rs" },
-    { name = "scikit-learn" },
     { name = "tokenizers" },
 ]
 
@@ -466,10 +465,12 @@ dev = [
     { name = "pytest-benchmark" },
     { name = "pytest-cov" },
     { name = "ruff" },
+    { name = "scikit-learn" },
 ]
 training = [
     { name = "datasets" },
     { name = "pyarrow" },
+    { name = "scikit-learn" },
     { name = "tqdm" },
     { name = "zstandard" },
 ]
@@ -483,7 +484,8 @@ requires-dist = [
     { name = "pytest-benchmark", marker = "extra == 'dev'", specifier = ">=5.1.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.1" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.5.0" },
-    { name = "scikit-learn", specifier = ">=1.6.0" },
+    { name = "scikit-learn", marker = "extra == 'dev'", specifier = ">=1.6.0" },
+    { name = "scikit-learn", marker = "extra == 'training'", specifier = ">=1.6.0" },
     { name = "tokenizers", specifier = ">=0.20.0" },
     { name = "tqdm", marker = "extra == 'training'", specifier = ">=4.66" },
     { name = "zstandard", marker = "extra == 'training'", specifier = ">=0.22" },

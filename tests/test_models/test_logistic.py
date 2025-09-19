@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
+pytest.importorskip("sklearn")
+
 from llm_detector.models import LogisticRegressionModel
 from llm_detector.training.dataset import FeatureDataset
 
@@ -30,7 +34,7 @@ def test_logistic_model_trains_and_predicts(tmp_path: Path):
     probs = model.predict_proba([0.9])
     assert probs[1] > probs[0]
 
-    model_path = tmp_path / "model.joblib"
+    model_path = tmp_path / "model.json.gz"
     model.save(model_path)
 
     loaded = LogisticRegressionModel.load(model_path)

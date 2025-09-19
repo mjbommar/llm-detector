@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
+pytest.importorskip("sklearn")
+
 from llm_detector.training.pipeline import TrainingArtifacts, train_logistic_from_registry
 from llm_detector.training.sources.base import BaseDataSource, BatchConfig
 from llm_detector.training.sources.registry import SourceCategory, SourceDefinition, SourceRegistry
@@ -57,7 +61,7 @@ def _registry() -> SourceRegistry:
 
 
 def test_train_logistic_from_registry_creates_artifacts(tmp_path: Path):
-    model_path = tmp_path / "model.joblib"
+    model_path = tmp_path / "model.json.gz"
     baseline_path = tmp_path / "baselines.json.gz"
 
     artifacts = train_logistic_from_registry(
@@ -95,7 +99,7 @@ def test_cli_invocation(monkeypatch, tmp_path: Path, capsys):
 
     monkeypatch.setattr("llm_detector.training.cli.train_logistic_from_registry", _fake_train)
 
-    model_path = tmp_path / "model.joblib"
+    model_path = tmp_path / "model.json.gz"
     args = [
         "--model-path",
         str(model_path),

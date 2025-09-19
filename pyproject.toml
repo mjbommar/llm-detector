@@ -4,24 +4,61 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "llm-detector"
-version = "0.1.0"
+version = "0.2.0"
 description = "Transparent, probabilistic classification of text as human-generated or LLM-generated"
+authors = [
+    {name = "Michael Bommarito", email = "michael.bommarito@gmail.com"}
+]
 readme = "README.md"
+license = {text = "MIT"}
 requires-python = ">=3.11"
+keywords = [
+    "llm-detection",
+    "ai-detection",
+    "text-classification",
+    "machine-learning",
+    "nlp",
+    "natural-language-processing",
+    "gpt-detection",
+    "chatgpt-detection",
+    "ai-generated-text",
+    "human-vs-ai",
+    "text-analysis",
+    "statistical-nlp",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Operating System :: OS Independent",
+]
 dependencies = [
     "nupunkt-rs>=0.1.1",
-    "scikit-learn>=1.6.0",
     "tokenizers>=0.20.0",
 ]
 
+[project.urls]
+"Homepage" = "https://github.com/mjbommar/llm-detector"
+"Bug Tracker" = "https://github.com/mjbommar/llm-detector/issues"
+"Repository" = "https://github.com/mjbommar/llm-detector"
+
 [project.optional-dependencies]
 training = [
+    "scikit-learn>=1.6.0",
     "datasets>=2.19",
     "zstandard>=0.22",
     "pyarrow>=12",
     "tqdm>=4.66",
 ]
 dev = [
+    "scikit-learn>=1.6.0",
     "pytest>=8.4.2",
     "pytest-cov>=4.1",
     "pytest-benchmark>=5.1.0",
@@ -73,4 +110,3 @@ markers = [
     "integration: tests that rely on external data sources or long-running streaming jobs",
     "requires_datasets: tests that require the Hugging Face datasets package",
 ]
-

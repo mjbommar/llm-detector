@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
+pytest.importorskip("sklearn")
+
 from llm_detector.baselines import (
     BaselineArtifact,
     BaselineCache,
@@ -49,7 +53,7 @@ def _train_model(tmp_path: Path, baselines: BaselineSet) -> Path:
     model = LogisticRegressionModel()
     model.fit(dataset)
 
-    model_path = tmp_path / "model.joblib"
+    model_path = tmp_path / "model.json.gz"
     model.save(model_path)
     return model_path
 

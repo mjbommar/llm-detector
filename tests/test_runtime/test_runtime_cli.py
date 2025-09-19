@@ -4,6 +4,8 @@ import json
 
 import pytest
 
+pytest.importorskip("sklearn")
+
 from llm_detector.baselines import (
     BaselineArtifact,
     BaselineCache,
@@ -51,7 +53,7 @@ def _artifacts(tmp_path_factory: pytest.TempPathFactory):
     dataset = build_feature_dataset(vectorizer, samples)
     model = LogisticRegressionModel()
     model.fit(dataset)
-    model_path = tmp_dir / "model.joblib"
+    model_path = tmp_dir / "model.json.gz"
     model.save(model_path)
 
     return model_path, baseline_path

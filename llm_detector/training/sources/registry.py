@@ -9,8 +9,11 @@ from enum import Enum
 from llm_detector.textops import DEFAULT_MIN_SENTENCE_LENGTH
 
 from .base import SourceFactory
+from .formal import LegalDocumentsSource, TechnicalDocsSource
 from .human import FinePDFsSource, GutenbergSource, WikipediaSource
 from .llm import CosmopediaSource, LMSYSSource, UltraChatSource
+from .llm_2024 import Claude3OpusSource, Claude35SonnetSource, GPT4AlpacaSource, MixtralInstructSource
+from .social_media import MultiPlatformSocialSource, TwitterSource
 
 
 class SourceCategory(Enum):
@@ -93,6 +96,7 @@ def register_default_sources(registry: SourceRegistry | None = None) -> SourceRe
     reg = registry or SourceRegistry()
 
     definitions = [
+        # Original human sources
         SourceDefinition(
             name="finepdfs",
             category=SourceCategory.HUMAN,
@@ -121,6 +125,31 @@ def register_default_sources(registry: SourceRegistry | None = None) -> SourceRe
             ),
             description="English Wikipedia articles",
         ),
+
+        # New human sources - social media (2024-2025)
+        SourceDefinition(
+            name="twitter",
+            category=SourceCategory.HUMAN,
+            factory=lambda: TwitterSource(
+                min_length=DEFAULT_MIN_SENTENCE_LENGTH,
+            ),
+            description="Twitter/X posts (short-form)",
+            enabled=True,  # Enable for informal human text
+        ),
+
+        # New human sources - formal/technical
+        SourceDefinition(
+            name="legal_docs",
+            category=SourceCategory.HUMAN,
+            factory=lambda: LegalDocumentsSource(
+                min_length=100,
+                max_length=10000,
+            ),
+            description="US legal documents (contracts, opinions, regulations)",
+            enabled=True,  # Enable for formal human text
+        ),
+
+        # Original LLM sources
         SourceDefinition(
             name="cosmopedia_web_samples_v2",
             category=SourceCategory.LLM,
@@ -129,6 +158,7 @@ def register_default_sources(registry: SourceRegistry | None = None) -> SourceRe
                 min_sentence_length=DEFAULT_MIN_SENTENCE_LENGTH,
             ),
             description="Cosmopedia synthetic long-form articles",
+            enabled=True,  # Re-enable for diversity
         ),
         SourceDefinition(
             name="lmsys",
@@ -147,6 +177,45 @@ def register_default_sources(registry: SourceRegistry | None = None) -> SourceRe
                 min_sentence_length=DEFAULT_MIN_SENTENCE_LENGTH,
             ),
             description="UltraChat assistant responses",
+            enabled=True,  # Enable for GPT-3.5 style variety
+        ),
+
+        # New LLM sources (2024-2025 models)
+        SourceDefinition(
+            name="gpt4_alpaca",
+            category=SourceCategory.LLM,
+            factory=lambda: GPT4AlpacaSource(
+                min_length=DEFAULT_MIN_SENTENCE_LENGTH,
+            ),
+            description="GPT-4 instruction-following dataset (52K examples)",
+            enabled=True,
+        ),
+        SourceDefinition(
+            name="claude3_opus",
+            category=SourceCategory.LLM,
+            factory=lambda: Claude3OpusSource(
+                min_length=DEFAULT_MIN_SENTENCE_LENGTH,
+            ),
+            description="Claude 3 Opus instruction dataset (15K examples)",
+            enabled=True,
+        ),
+        SourceDefinition(
+            name="claude35_sonnet",
+            category=SourceCategory.LLM,
+            factory=lambda: Claude35SonnetSource(
+                min_length=DEFAULT_MIN_SENTENCE_LENGTH,
+            ),
+            description="Claude 3.5 Sonnet reflection dataset",
+            enabled=False,  # Disable - keep claude3_opus as representative
+        ),
+        SourceDefinition(
+            name="mixtral_instruct",
+            category=SourceCategory.LLM,
+            factory=lambda: MixtralInstructSource(
+                min_length=DEFAULT_MIN_SENTENCE_LENGTH,
+            ),
+            description="Mixtral-8x7B synthetic content",
+            enabled=True,
         ),
     ]
 

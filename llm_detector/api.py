@@ -153,7 +153,8 @@ def classify_text(
 
     Args:
         text: Sample to classify.
-        model_path: Optional path to a trained ``.joblib`` logistic model.
+        model_path: Optional path to a trained ``.json.gz`` logistic model (or legacy
+            ``.joblib`` file).
         baseline_path: Optional path to the baseline JSON.gz matching the model.
         include_diagnostics: When ``True`` and returning a dictionary, include
             secondary aggregation metrics (simple_mean, max_score, vote_fraction).

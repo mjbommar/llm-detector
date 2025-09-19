@@ -6,9 +6,10 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from importlib import resources
 from pathlib import Path
+from typing import Any
 
 _PACKAGE = __name__
-_MODEL_FILE = "default_model.joblib"
+_MODEL_CANDIDATES = ("default_model.json.gz", "default_model.joblib")
 _BASELINE_FILE = "default_baselines.json.gz"
 
 
@@ -22,15 +23,24 @@ def _get_resource(name: str):
     return ref
 
 
+def _resolve_model_resource() -> tuple[str | None, Any | None]:
+    for candidate in _MODEL_CANDIDATES:
+        ref = _get_resource(candidate)
+        if ref is not None:
+            return candidate, ref
+    return None, None
+
+
 def has_default_artifacts() -> bool:
-    return _get_resource(_MODEL_FILE) is not None and _get_resource(_BASELINE_FILE) is not None
+    _, model_ref = _resolve_model_resource()
+    return model_ref is not None and _get_resource(_BASELINE_FILE) is not None
 
 
 @contextmanager
 def default_artifacts() -> Iterator[tuple[Path, Path] | None]:
     """Yield filesystem paths to bundled model/baselines if available."""
 
-    model_ref = _get_resource(_MODEL_FILE)
+    _, model_ref = _resolve_model_resource()
     baseline_ref = _get_resource(_BASELINE_FILE)
     if model_ref is None or baseline_ref is None:
         yield None

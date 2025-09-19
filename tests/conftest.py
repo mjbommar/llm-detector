@@ -13,8 +13,8 @@ def packaged_model(tmp_path_factory: pytest.TempPathFactory) -> tuple[Path, Path
         assert bundle is not None, "Bundled assets missing"
         model_path, baseline_path = bundle
         tmp_dir = tmp_path_factory.mktemp("runtime_model")
-        model_copy = tmp_dir / "model.joblib"
-        baseline_copy = tmp_dir / "baselines.json.gz"
+        model_copy = tmp_dir / model_path.name
+        baseline_copy = tmp_dir / baseline_path.name
         model_copy.write_bytes(model_path.read_bytes())
         baseline_copy.write_bytes(baseline_path.read_bytes())
         return model_copy, baseline_copy
